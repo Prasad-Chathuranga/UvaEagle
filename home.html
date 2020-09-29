@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<title>Uva Eagle - Bill Management</title>
+
+
+<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+<script>
+  // Initialize Firebase sdk path
+  var config = {
+    apiKey: "AIzaSyCev67940N5NXOQFv-QP4fRfFr12ya3R98",
+    authDomain: "uvaeagle-8dfd6.firebaseapp.com/",
+    databaseURL: "https://uvaeagle-8dfd6.firebaseio.com/",
+    projectId: "uvaeagle-8dfd6",
+    storageBucket: "",
+    messagingSenderId: "226150255896"
+  };
+  firebase.initializeApp(config);
+  database = firebase.database();
+</script>
+</head>
+<body>
+
+<!-- Just an image -->
+<nav class="navbar navbar-light bg-light shadow-sm">
+    
+     <h5 class="text-center">Uva Eagle</h5>
+     <div class="nav-link">
+         <a href="index.html" style="text-decoration: none;" class="mr-auto">
+           Log Out  
+         </a>
+     </div>
+    
+  </nav>
+
+
+
+<script>
+	
+var ref = database.ref('message');
+ref.on('value', gotData, errData);
+
+function gotData(data){
+
+
+    var message = data.val();
+    var keys = Object.keys(message);
+
+    
+
+
+    var tblUsers = document.getElementById('tbl_users_list');
+    var databaserefer = firebase.database().ref('message/');
+    var rowindex = 1;
+    
+    databaserefer.once('value',function(snapshot)
+    {
+	snapshot.forEach(function(childSnapshot)
+	{
+        var childKey = childSnapshot.key;
+        
+       
+
+		var childData = childSnapshot.val();
+		var row = tblUsers.insertRow(rowindex);
+        var cellId = row.insertCell(0);
+        var cellName = row.insertCell(1);
+        var cellItemList = row.insertCell(2);
+        var cellQuantity = row.insertCell(3);
+        var cellTotalPrice = row.insertCell(4);
+        var cellReturnAmount = row.insertCell(5);
+        var cellFinalPrice = row.insertCell(6);
+        cellId.appendChild(document.createTextNode(childData.customer_name));
+        cellName.appendChild(document.createTextNode(childData.date));
+        cellQuantity.appendChild(document.createTextNode(childData.total_quantity));
+        cellTotalPrice.appendChild(document.createTextNode(childData.total_price));
+        cellReturnAmount.appendChild(document.createTextNode(childData.return_amount));
+        cellFinalPrice.appendChild(document.createTextNode(childData.final_price));
+        
+
+        // for (var i = 0; i < childData.itemList.length; i++) {
+        //         childData.itemList[i];
+        //         var x = childData.itemList[i];
+        //         console.log(x);
+               
+ 
+  
+        //     }
+
+            cellItemList.appendChild(document.createTextNode(childData.itemList));
+
+        rowindex = rowindex + 1;
+
+     });
+});
+
+
+
+
+}
+
+function errData(err)
+{
+    console.log('Error!');
+    console.log(err);
+}
+
+//Relad page after every click
+
+function reload_page()
+{
+	window.location.reload();
+}
+
+
+</script>
+
+<div class="container mt-5">
+    <h4 class="text-center text-primary mb-3">Printed Bills</h4>
+<table class="table table-bordered" id="tbl_users_list">
+<tr>
+	<td scope="col"><b>Customer Name</b></td>
+    <td><b>Printed Time</b></td>
+    <td><b>Item List</b></td>
+    <td><b>Total Quantity</b></td>
+    <td><b>Total Price</b></td>
+    <td><b>Return Amount</b></td>
+    <td><b>Final Price</b></td>
+</tr>
+</table>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>
